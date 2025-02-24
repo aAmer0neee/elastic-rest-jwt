@@ -6,14 +6,19 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
+	"strconv"
+	"time"
+
 	"github.com/aAmer0neee/elastic-rest-jwt/pkg/authorisation"
 	"github.com/aAmer0neee/elastic-rest-jwt/pkg/database"
-	"strconv"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/ilm/retry"
 )
 
 var (
-	elasticURL      = "http://localhost:9200"
-	applicationPort = ":8888"
+	applicationPort = ":" + os.Getenv("APP_PORT")
+
+	elasticURL = "http://" + os.Getenv("DB_HOST") + ":" + os.Getenv("DB_PORT")
 
 	indexHtml = "./pkg/configs/index.html"
 )
@@ -30,8 +35,30 @@ type (
 	}
 )
 
-func Run() error {
+func tryConnect()(bool) {
+	retry := 
+	for {
+        resp, err := http.Get(elasticURL)
+        if err != nil {
+            
+        }
 
+        if resp.StatusCode == 200 {
+			return true
+           
+
+        } else {
+			log.Printf("Received non-200 status code: %d\nRetrying in 5 seconds...", resp.StatusCode)
+            time.Sleep(5 * time.Second)
+            
+        }
+    }	
+	return false
+}
+
+func Run() {
+	
+	
 	EsClient, err := database.CreateNewClient(elasticURL)
 
 	if err != nil {
@@ -60,10 +87,8 @@ func Run() error {
 	})
 
 	if err := http.ListenAndServe(applicationPort, mux); err != nil {
-		log.Fatalf("ошибка запуска сервера на порт :8888")
+		log.Fatalf("error starting server at :8888")
 	}
-
-	return nil
 }
 
 // промежуточный хендлер, проверяет JWT токен,

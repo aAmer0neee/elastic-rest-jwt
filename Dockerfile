@@ -1,21 +1,14 @@
-# Stage 1: Build the Go app
-FROM golang:1.22.2-alpine as builder
+FROM golang:latest
 
-WORKDIR /app
+RUN go version
+ENV GOPATH=/
 
-COPY go.mod go.sum ./
+COPY ./ ./
 
 RUN go mod tidy
+RUN go build -o app ./cmd/main.go
+RUN ls -la .
 
-COPY . .
+RUN chmod +x ./app
 
-RUN GOOS=linux GOARCH=amd64 go build -o app ./cmd/main.go
-
-# Stage 2: Run the app in a smaller image
-FROM alpine:latest
-
-COPY --from=builder /app/app /usr/local/bin/app
-
-EXPOSE 8888
-
-CMD ["app"]
+CMD ["./app"]
