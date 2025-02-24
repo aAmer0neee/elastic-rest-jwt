@@ -17,68 +17,66 @@ This is a simple REST API built with Go (Golang), Elasticsearch, and JWT Authent
 ## Getting Started
 
 ### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/aAmer0neee/elastic-rest-jwt.git
 ```
-### 2. Set Up Elasticsearch
-If you don't have Elasticsearch installed, you can run it using Docker. Run the following command to start the Elasticsearch container:
+### 2. Deploy Application
+
+Use docker-compose:
 
 ```bash
-docker run -d --name elasticsearch \
-  -e "discovery.type=single-node" \
-  -e "xpack.security.enabled=false" \
-  -e "xpack.security.transport.ssl.enabled=false" \
-  -p 9200:9200\
-  docker.elastic.co/elasticsearch/elasticsearch:8.17.2
+docker-compose up --build
 ```
-3. Build the Project
-Make sure you have Go installed and set up. Run the following command to build the Go application:
+
+You should get the following response:
 
 ```bash
-go build -o app .
+Successfully built 8dfa01956e3c
+Successfully tagged elastic-rest-jwt_server:latest
+Creating elastic-rest-jwt_elasticsearch_1 ... done
+Creating elastic-rest-jwt_server_1        ... done
 ```
-4. Run the Application
 
-Start the application using the following command:
-```bash
-./app
-By default, the application will run on port 8888. You can change the port in the code or set the PORT environment variable.
+### 3. Create ElasticSearch index
+The restaurant database provided in the repository (taken from an open data portal) consists of more than 13 thousand restaurants in the Moscow area
 
-5. Test the Endpoints
-You can test the API using tools like Postman or curl.
+using curl or postman:
 
-Example requests:
-Generate a JWT Token
+```http
+PUT http://localhost:8888/create/?name=<index_name>
+```
 
-Request:
+### 4. Test the Endpoints
 
-http
-Копировать
-Редактировать
-POST /auth/login
-This endpoint will return a JWT token for authenticated users.
+#### 1. Index Pagination
 
-Get All Items (with JWT authentication)
 
-Request:
+```http
+http://localhost:8888/?page=1
+```
 
-http
-Копировать
-Редактировать
-GET /items
+#### 2. Retrieve Data from the Database Using API
+
+
+```http
+http://localhost:8888/api/?page=1
+```
+
+#### 3. Get JWT Token
+
+
+```http
+http://localhost:8888/api/get_token
+```
+
+This endpoint will return a JWT token for authentication.
+
+#### 4. Get Restaurant Recommendations Based on Location
+
+Use **Postman** to add the following header:
 Authorization: Bearer <your-jwt-token>
-Add a New Item to Elasticsearch
 
-Request:
-
-http
-Копировать
-Редактировать
-POST /items
-Authorization: Bearer <your-jwt-token>
-Content-Type: application/json
-Example cURL Command:
-bash
-Копировать
-Редактировать
-curl -X GET http://localhost:8080/items -H "Authorization: Bearer <your-jwt-token>"
+```http
+GET http://localhost:8888/api/recommend/?lat=55.674&lon=37.666
+```

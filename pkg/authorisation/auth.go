@@ -57,7 +57,7 @@ func VerifyToken(r *http.Request) (bool, error) {
 func GetToken(w http.ResponseWriter, r *http.Request) UserAuth {
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{ //Claims для токена содержат время, когда действие истекает
-		"exp": time.Now().Add(time.Second * 30).Unix(),
+		"exp": time.Now().Add(time.Minute * 30).Unix(),
 	})
 
 	tokenStr, _ := token.SignedString(jwtSecretKey) // подпись токена секретным ключом
