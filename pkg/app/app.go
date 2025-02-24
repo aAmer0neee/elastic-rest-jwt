@@ -8,11 +8,11 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"time"
+	/* "time" */
 
 	"github.com/aAmer0neee/elastic-rest-jwt/pkg/authorisation"
 	"github.com/aAmer0neee/elastic-rest-jwt/pkg/database"
-	"github.com/elastic/go-elasticsearch/v8/typedapi/ilm/retry"
+	/* "github.com/elastic/go-elasticsearch/v8/typedapi/ilm/retry" */
 )
 
 var (
@@ -35,7 +35,7 @@ type (
 	}
 )
 
-func tryConnect()(bool) {
+/* func tryConnect()(bool) {
 	retry := 
 	for {
         resp, err := http.Get(elasticURL)
@@ -54,7 +54,7 @@ func tryConnect()(bool) {
         }
     }	
 	return false
-}
+} */
 
 func Run() {
 	
