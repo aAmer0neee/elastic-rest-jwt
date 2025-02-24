@@ -4,15 +4,21 @@ This is a simple REST API built with Go (Golang), Elasticsearch, and JWT Authent
 
 ## Features
 
-- **JWT Authentication**: Secure the API with JWT tokens.
+
 - **Elasticsearch Integration**: Perform CRUD operations on Elasticsearch.
 - **REST API**: Simple REST endpoints for interacting with the database.
 - **Go (Golang)**: Server-side logic implemented in Go.
+- **JWT Authentication**: Secure the API with JWT tokens.
+- **Docker-compose**: For deploying and managing database and server containers.
 
 ## Prerequisites
 
-- **Go**: Install Go version 1.18 or later. You can download it from [here](https://go.dev/dl/).
-- **Elasticsearch**: Make sure you have Elasticsearch running. You can use Docker to run Elasticsearch locally.
+- **Docker**: `28.0.0` and latest
+Docker is required to build, deploy, and manage the application and its dependencies in containers.
+
+- **Docker Compose Version**: `3.9` and latest  
+Docker-compose is used to define and run multi-container Docker applications. It allows you to define all your services, including the database and server, in a single file (docker-compose.yml).
+
 
 ## Getting Started
 
@@ -43,32 +49,28 @@ The restaurant database provided in the repository (taken from an open data port
 
 using curl or postman:
 
-```http
-PUT http://localhost:8888/create/?name=<index_name>
-```
+PUT <http://localhost:8888/create/?name=index_name>
+
 
 ### 4. Test the Endpoints
 
 #### 1. Index Pagination
 
 
-```http
-http://localhost:8888/?page=1
-```
+GET <http://localhost:8888/?page=1>
+
 
 #### 2. Retrieve Data from the Database Using API
 
 
-```http
-http://localhost:8888/api/?page=1
-```
+GET <http://localhost:8888/api/?page=1>
+
 
 #### 3. Get JWT Token
 
 
-```http
-http://localhost:8888/api/get_token
-```
+GET <http://localhost:8888/api/get_token>
+
 
 This endpoint will return a JWT token for authentication.
 
@@ -77,6 +79,5 @@ This endpoint will return a JWT token for authentication.
 Use **Postman** to add the following header:
 Authorization: Bearer <your-jwt-token>
 
-```http
-GET http://localhost:8888/api/recommend/?lat=55.674&lon=37.666
-```
+
+GET <http://localhost:8888/api/recommend/?lat=55.674&lon=37.666>
