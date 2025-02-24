@@ -8,11 +8,9 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	/* "time" */
 
 	"github.com/aAmer0neee/elastic-rest-jwt/pkg/authorisation"
 	"github.com/aAmer0neee/elastic-rest-jwt/pkg/database"
-	/* "github.com/elastic/go-elasticsearch/v8/typedapi/ilm/retry" */
 )
 
 var (
@@ -35,29 +33,7 @@ type (
 	}
 )
 
-/* func tryConnect()(bool) {
-	retry := 
-	for {
-        resp, err := http.Get(elasticURL)
-        if err != nil {
-            
-        }
-
-        if resp.StatusCode == 200 {
-			return true
-           
-
-        } else {
-			log.Printf("Received non-200 status code: %d\nRetrying in 5 seconds...", resp.StatusCode)
-            time.Sleep(5 * time.Second)
-            
-        }
-    }	
-	return false
-} */
-
 func Run() {
-	
 	
 	EsClient, err := database.CreateNewClient(elasticURL)
 

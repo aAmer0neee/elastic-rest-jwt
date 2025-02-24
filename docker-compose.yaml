@@ -12,7 +12,8 @@ services:
       - DB_HOST=elasticsearch
       - DB_PORT=9200
     depends_on:
-      - elasticsearch
+      elasticsearch:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -31,6 +32,12 @@ services:
       - "9300:9300"
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cat/health"]
+      interval: 10s
+      retries: 5
+      start_period: 20s
+      timeout: 5s
 
 volumes:
   es_data:
