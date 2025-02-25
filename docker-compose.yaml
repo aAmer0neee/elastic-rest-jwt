@@ -11,6 +11,7 @@ services:
       - APP_PORT=8888
       - DB_HOST=elasticsearch
       - DB_PORT=9200
+      - JWT_SECRET_KEY=JWT_SECRET_KEY  # ONLY FOR TESTING
     depends_on:
       elasticsearch:
         condition: service_healthy

@@ -18,7 +18,7 @@ var (
 
 	elasticURL = "http://" + os.Getenv("DB_HOST") + ":" + os.Getenv("DB_PORT")
 
-	indexHtml = "./pkg/configs/index.html"
+	indexHtml = "./configs/index.html"
 )
 
 type (
@@ -110,7 +110,7 @@ func CreateIndexHandler(store database.Store, w http.ResponseWriter, r *http.Req
 			return
 		}
 
-		if err := store.ChangeIndexSizeSetting(indexName); err != nil {
+		if err := store.ChangeIndexSizeSetting(elasticURL,indexName); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}

@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
-
+	"os"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -16,7 +16,7 @@ type (
 )
 
 var (
-	jwtSecretKey = []byte("JWT_SECRET_KEY")
+	jwtSecretKey = []byte(os.Getenv("JWT_SECRET_KEY"))
 )
 
 func VerifyToken(r *http.Request) (bool, error) {

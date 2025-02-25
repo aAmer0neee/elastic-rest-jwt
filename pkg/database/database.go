@@ -58,7 +58,7 @@ type (
 
 		CreateNewIndex(string) error
 		BukIndexing(string) error
-		ChangeIndexSizeSetting(indexName string) error
+		ChangeIndexSizeSetting(elasticURL,indexName string) error
 	}
 
 	EsClient struct {
@@ -68,7 +68,7 @@ type (
 
 const (
 	dataSetPath = "./data/data.csv"
-	schemaPath  = "./pkg/configs/schema.json"
+	schemaPath  = "./configs/schema.json"
 )
 
 // создает нового клиента с конфигурацией из CFG
@@ -121,7 +121,7 @@ func (e *EsClient) BukIndexing(indexName string) error {
 }
 
 // изменение настроек elastic для отображения всех документов индекса dafault: 10 000
-func (e *EsClient) ChangeIndexSizeSetting(indexName string) error {
+func (e *EsClient) ChangeIndexSizeSetting(elasticURL,indexName string) error {
 
 	responseSize := `{
 		"index": {
@@ -129,13 +129,12 @@ func (e *EsClient) ChangeIndexSizeSetting(indexName string) error {
 		}
 	}`
 
-	elasticSettingsUrl := fmt.Sprintf("http://localhost:9200/%s/_settings", indexName)
+	elasticSettingsUrl := fmt.Sprintf("%s/%s/_settings",elasticURL, indexName)
 
 	request, err := http.NewRequest(http.MethodPut, elasticSettingsUrl, bytes.NewReader([]byte(responseSize)))
 	if err != nil {
 		return fmt.Errorf("ChangeIndexSizeSetting \"%v\"", err)
 	}
-	defer request.Body.Close()
 
 	request.Header.Set("Content-Type", "application/json")
 	client := http.Client{}
@@ -144,6 +143,7 @@ func (e *EsClient) ChangeIndexSizeSetting(indexName string) error {
 	if err != nil {
 		return fmt.Errorf("ChangeIndexSizeSetting \"%v\" client response: \"%v\"", err, response)
 	}
+	defer response.Body.Close()
 
 	return nil
 }
