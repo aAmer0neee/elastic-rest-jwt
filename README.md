@@ -77,7 +77,7 @@ This endpoint will return a JWT token for authentication.
 #### 4. Get Restaurant Recommendations Based on Location
 
 Use **Postman** to add the following header:
-Authorization: Bearer <your-jwt-token>
+Authorization: Bearer "your-jwt-token"
 
 
 GET <http://localhost:8888/api/recommend/?lat=55.674&lon=37.666>
